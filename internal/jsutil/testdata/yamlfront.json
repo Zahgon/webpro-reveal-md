@@ -1,0 +1,117 @@
+[
+  {
+    "input": "---\ntitle: Foo\n---\nBody\n",
+    "expected": "{\"title\":\"Foo\",\"__content\":\"\\nBody\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\r\ntitle: Foo\r\n---\r\nBody\r\n",
+    "expected": "{\"title\":\"Foo\",\"__content\":\"\\r\\nBody\\r\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\ntitle: Foo\n---\n",
+    "expected": "{\"title\":\"Foo\",\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "no front matter here",
+    "expected": "{\"__content\":\"no front matter here\"}",
+    "error": null
+  },
+  {
+    "input": "\n---\ntitle: Foo\n---\nBody",
+    "expected": "{\"__content\":\"\\n---\\ntitle: Foo\\n---\\nBody\"}",
+    "error": null
+  },
+  {
+    "input": "---\na: 017\nb: 1:30\nc: 0x1F\nd: 1_000\ne: .5\nf: 1.\ng: 1e3\n---\nx",
+    "expected": "{\"a\":15,\"b\":90,\"c\":31,\"d\":1000,\"e\":0.5,\"f\":1,\"g\":1000,\"__content\":\"\\nx\"}",
+    "error": null
+  },
+  {
+    "input": "---\nh: yes\ni: True\nj: ~\nk: null\nl: NULL\nm: no\nn: off\n---\n",
+    "expected": "{\"h\":\"yes\",\"i\":true,\"j\":null,\"k\":null,\"l\":null,\"m\":\"no\",\"n\":\"off\",\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\no: 0o17\np: +5\nq: 1e+3\nr: 6.8523015e+5\ns: 12:30:45\nt: 0b101\n---\n",
+    "expected": "{\"o\":\"0o17\",\"p\":5,\"q\":1000,\"r\":685230.15,\"s\":45045,\"t\":5,\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\nu: .inf\nv: -.inf\nw: .nan\nx: 0\ny: -0\nz: 00\n---\n",
+    "expected": "{\"u\":null,\"v\":null,\"w\":null,\"x\":0,\"y\":0,\"z\":0,\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\nd1: 2024-01-02\nd2: 2024-01-02 03:04:05\nd3: 2024-01-02T03:04:05.123Z\nd4: 2024-01-02T03:04:05+02:00\n---\n",
+    "expected": "{\"d1\":\"2024-01-02T00:00:00.000Z\",\"d2\":\"2024-01-02T03:04:05.000Z\",\"d3\":\"2024-01-02T03:04:05.123Z\",\"d4\":\"2024-01-02T01:04:05.000Z\",\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\ntitle: \"1\"\nother: 'true'\nblock: |\n  line1\n  line2\nfold: >\n  fold1\n  fold2\n---\n",
+    "expected": "{\"title\":\"1\",\"other\":\"true\",\"block\":\"line1\\nline2\\n\",\"fold\":\"fold1 fold2\\n\",\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\nnested:\n  a: 1\n  b:\n    c: 2\nflowmap: {x: 1, y: two}\nflowseq: [1, 2, three]\n---\n",
+    "expected": "{\"nested\":{\"a\":1,\"b\":{\"c\":2}},\"flowmap\":{\"x\":1,\"y\":\"two\"},\"flowseq\":[1,2,\"three\"],\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\nlist:\n  - one\n  - 2\n  - true\n---\n",
+    "expected": "{\"list\":[\"one\",2,true],\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\nrevealOptions:\n  transition: fade\n  slideNumber: true\n  width: 960\n---\ncontent",
+    "expected": "{\"revealOptions\":{\"transition\":\"fade\",\"slideNumber\":true,\"width\":960},\"__content\":\"\\ncontent\"}",
+    "error": null
+  },
+  {
+    "input": "---\ntitle: Foobar\nseparator: <!--s-->\nverticalSeparator: <!--v-->\ntheme: solarized\n---\nSlide",
+    "expected": "{\"title\":\"Foobar\",\"separator\":\"<!--s-->\",\"verticalSeparator\":\"<!--v-->\",\"theme\":\"solarized\",\"__content\":\"\\nSlide\"}",
+    "error": null
+  },
+  {
+    "input": "---\nempty:\nzero: 0\nemptystr: \"\"\n---\n",
+    "expected": "{\"empty\":null,\"zero\":0,\"emptystr\":\"\",\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\nkey: value with: colon inside\n---\n",
+    "expected": null,
+    "error": "incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line at line 1, column 16:"
+  },
+  {
+    "input": "---\nnum: 007\nstr: 0x\nweird: 1:60\n---\n",
+    "expected": "{\"num\":7,\"str\":\"0x\",\"weird\":\"1:60\",\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\nanchors: &a\n  x: 1\nuse:\n  <<: *a\n  y: 2\n---\n",
+    "expected": "{\"anchors\":{\"x\":1},\"use\":{\"x\":1,\"y\":2},\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\n{\"json\": true, \"n\": 1}\n---\nbody",
+    "expected": "{\"json\":true,\"n\":1,\"__content\":\"\\nbody\"}",
+    "error": null
+  },
+  {
+    "input": "---\nutf: é中文🎉\nesc: \"tab\\there\"\n---\n",
+    "expected": "{\"utf\":\"é中文🎉\",\"esc\":\"tab\\there\",\"__content\":\"\\n\"}",
+    "error": null
+  },
+  {
+    "input": "---\ntitle: Foo\n---",
+    "expected": "{\"title\":\"Foo\",\"__content\":\"\"}",
+    "error": null
+  },
+  {
+    "input": "---\n\n---\nbody",
+    "expected": "{\"__content\":\"---\\n\\n---\\nbody\"}",
+    "error": null
+  }
+]
